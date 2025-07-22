@@ -1,0 +1,36 @@
+Copyright (c) 2024 Coastal Fitness & Correction
+Developed by Clockworks Coding
+
+LIMITED CUSTOMIZATION LICENSE
+
+This software is licensed to Coastal Fitness & Correction under a Limited Customization Package.
+
+GRANT OF LICENSE
+Clockworks Coding grants Coastal Fitness & Correction a non-exclusive, non-transferable license to use this customized fitness management platform for their business operations.
+
+INCLUDED IN THIS PACKAGE:
+- Platform installation and configuration
+- Basic branding with Coastal Fitness & Correction identity
+- Custom color scheme and logo integration
+- Data import capabilities (up to 100 clients)
+- 2 hours of training
+- 30 days of support from delivery date
+- Bug fixes during support period
+
+RESTRICTIONS:
+- This software may not be resold or redistributed
+- Source code modifications are limited to agreed customizations
+- White label rights are NOT included in this package
+- Multi-location deployment requires additional licensing
+
+INTELLECTUAL PROPERTY:
+The underlying platform technology remains the property of Clockworks Coding. Coastal Fitness & Correction owns their specific branding, client data, and content.
+
+SUPPORT:
+Support is provided for 30 days from delivery date. Extended support available separately.
+
+LIABILITY:
+This software is provided "as is" without warranty of any kind. In no event shall Clockworks Coding be liable for any damages arising from the use of this software.
+
+For additional customizations or licensing inquiries, contact:
+Clockworks Coding - support@clockworkscoding.com

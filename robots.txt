@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://coastal-fitness.vercel.app/sitemap.xml

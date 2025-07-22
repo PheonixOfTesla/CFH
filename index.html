@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Coastal Fitness & Correction - Revolutionary Health Platform">
+    <meta name="author" content="Dr. Josh Lerner">
+    <title>Coastal Fitness & Correction - Complete Health Platform</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --coastal-blue: #244398;
+            --coastal-gray: #818386;
+            --coastal-light: #EBFBFF;
+            --coastal-cyan: #60E0E0;
+        }
+        
+        * { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #1f2937;
+        }
+        
+        .coastal-gradient {
+            background: linear-gradient(135deg, #4F63C9 0%, #7BA7D9 100%);
+            min-height: 100vh;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+        
+        .coastal-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .coastal-button {
+            background: var(--coastal-blue);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .coastal-button:hover:not(:disabled) {
+            background: #1a2f6f;
+            transform: translateY(-1px);
+        }
+        
+        .coastal-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .coastal-button-secondary {
+            background: var(--coastal-cyan);
+            color: var(--coastal-blue);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .coastal-button-secondary:hover {
+            background: #4dd6d6;
+            transform: translateY(-1px);
+        }
+        
+        .coastal-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .coastal-input:focus {
+            outline: none;
+            border-color: var(--coastal-blue);
+            box-shadow: 0 0 0 3px rgba(36, 67, 152, 0.1);
+        }
+        
+        .coastal-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .coastal-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-client { background: #dbeafe; color: #1e40af; }
+        .badge-specialist { background: #d1fae5; color: #059669; }
+        .badge-admin { background: #fef3c7; color: #d97706; }
+        .badge-owner { background: #e9d5ff; color: #7c3aed; }
+        .badge-engineer { background: #fee2e2; color: #dc2626; }
+        
+        .coastal-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+        
+        .coastal-tab:hover {
+            background: rgba(96, 224, 224, 0.1);
+        }
+        
+        .coastal-tab.active {
+            background: var(--coastal-blue);
+            color: white;
+        }
+        
+        .exercise-group {
+            background: #f0f9ff;
+            border: 2px solid #bae6fd;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .exercise-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            padding: 1rem;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--coastal-blue) 0%, var(--coastal-cyan) 100%);
+            transition: width 0.5s ease;
+            border-radius: 9999px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--coastal-blue) 0%, var(--coastal-cyan) 100%);
+        }
+        
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid var(--coastal-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #fca5a5;
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .success-message {
+            background: #d1fae5;
+            color: #059669;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #a7f3d0;
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .delete-button {
+            background: #ef4444;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .delete-button:hover {
+            background: #dc2626;
+        }
+        
+        .edit-button {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .edit-button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Demo accounts
+        const demoAccounts = {
+            'john.client@example.com': { 
+                password: 'password123', 
+                roles: ['client'], 
+                name: 'John Anderson',
+                id: 'client_001',
+                specialistIds: ['specialist_001']
+            },
+            'sarah.specialist@coastal.com': { 
+                password: 'specialist123', 
+                roles: ['specialist'], 
+                name: 'Dr. Sarah Mitchell',
+                id: 'specialist_001',
+                clientIds: ['client_001']
+            },
+            'admin@coastal.com': { 
+                password: 'admin123', 
+                roles: ['admin', 'specialist'], 
+                name: 'Admin User',
+                id: 'admin_001',
+                clientIds: []
+            },
+            'owner@coastal.com': { 
+                password: 'owner123', 
+                roles: ['owner', 'admin', 'specialist'], 
+                name: 'Tanya Beck',
+                id: 'owner_001',
+                clientIds: []
+            },
+            'engineer@coastal.com': { 
+                password: 'engineer123', 
+                roles: ['engineer', 'admin'], 
+                name: 'Josh Lerner',
+                id: 'engineer_001'
+            }
+        };
+
+        // Initialize demo data
+        const initDemoData = () => {
+            return {
+                measurements: [],
+                workouts: [],
+                nutrition: [],
+                goals: [],
+                tests: []
+            };
+        };
+
+        // Logo Component (without wave)
+        const CoastalLogo = ({ size = 'large' }) => {
+            const fontSize = size === 'large' ? 'text-3xl' : 'text-xl';
+            const subtitleSize = size === 'large' ? 'text-sm' : 'text-xs';
+            
+            return (
+                <div className="text-center">
+                    <div className={`font-bold ${fontSize}`} style={{ color: 'var(--coastal-blue)' }}>
+                        COASTAL
+                    </div>
+                    <div className={`${subtitleSize} tracking-wider`} style={{ color: 'var(--coastal-gray)' }}>
+                        FITNESS AND CORRECTION
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            const [currentUser, setCurrentUser] = useState(null);
+            const [activeTab, setActiveTab] = useState('dashboard');
+            const [clientData, setClientData] = useState(() => {
+                const saved = localStorage.getItem('coastalFitnessData');
+                return saved ? JSON.parse(saved) : initDemoData();
+            });
+            const [selectedClient, setSelectedClient] = useState(null);
+            const [allUsers, setAllUsers] = useState(() => {
+                const saved = localStorage.getItem('coastalFitnessUsers');
+                if (saved) return JSON.parse(saved);
+                return Object.entries(demoAccounts).map(([email, data]) => ({ ...data, email }));
+            });
+            const [notifications, setNotifications] = useState([]);
+            const [showStartWorkout, setShowStartWorkout] = useState(false);
+            const [activeWorkout, setActiveWorkout] = useState(null);
+
+            // Set dashboard as default tab after login
+            useEffect(() => {
+                if (currentUser) {
+                    setActiveTab('dashboard');
+                    // Clear any selected client on login
+                    setSelectedClient(null);
+                }
+            }, [currentUser]);
+
+            // Save data to localStorage
+            useEffect(() => {
+                localStorage.setItem('coastalFitnessData', JSON.stringify(clientData));
+            }, [clientData]);
+
+            useEffect(() => {
+                localStorage.setItem('coastalFitnessUsers', JSON.stringify(allUsers));
+            }, [allUsers]);
+
+            // Helper functions
+            const hasRole = (role) => currentUser?.roles?.includes(role);
+            const hasAnyRole = (...roles) => roles.some(role => hasRole(role));
+
+            const addNotification = (message, type = 'success') => {
+                const notification = { id: Date.now(), message, type };
+                setNotifications(prev => [...prev, notification]);
+                setTimeout(() => {
+                    setNotifications(prev => prev.filter(n => n.id !== notification.id));
+                }, 5000);
+            };
+
+            // Get clients for current specialist/admin/owner
+            const getMyClients = () => {
+                if (hasRole('owner') || hasRole('admin')) {
+                    return allUsers.filter(u => u.roles.includes('client'));
+                } else if (hasRole('specialist')) {
+                    return allUsers.filter(u => 
+                        u.roles.includes('client') && 
+                        currentUser.clientIds?.includes(u.id)
+                    );
+                }
+                return [];
+            };
+
+            // Login Component
+            const LoginForm = () => {
+                const [email, setEmail] = useState('');
+                const [password, setPassword] = useState('');
+                const [loginError, setLoginError] = useState('');
+                const [isSignup, setIsSignup] = useState(false);
+                const [name, setName] = useState('');
+
+                const handleAuth = async (e) => {
+                    e.preventDefault();
+                    
+                    if (isSignup) {
+                        const newUser = {
+                            id: `client_${Date.now()}`,
+                            email,
+                            password,
+                            name: name || email.split('@')[0],
+                            roles: ['client'],
+                            specialistIds: []
+                        };
+                        
+                        setAllUsers(prev => [...prev, newUser]);
+                        setCurrentUser(newUser);
+                    } else {
+                        const demoUser = demoAccounts[email];
+                        if (demoUser && demoUser.password === password) {
+                            setCurrentUser({ ...demoUser, email });
+                        } else {
+                            const dynamicUser = allUsers.find(u => u.email === email && u.password === password);
+                            if (dynamicUser) {
+                                setCurrentUser(dynamicUser);
+                            } else {
+                                setLoginError('Invalid credentials');
+                            }
+                        }
+                    }
+                };
+
+                return (
+                    <div className="coastal-gradient flex items-center justify-center min-h-screen p-4">
+                        <div className="login-card">
+                            <CoastalLogo size="large" />
+                            <p className="text-center text-gray-600 mt-2 mb-6">Revolutionary Health Platform</p>
+                            
+                            <form onSubmit={handleAuth}>
+                                {isSignup && (
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="coastal-input"
+                                            placeholder="Enter your full name"
+                                            required
+                                        />
+                                    </div>
+                                )}
+                                
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                    <input
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="coastal-input"
+                                        placeholder="Enter your email"
+                                        required
+                                    />
+                                </div>
+                                
+                                <div className="mb-6">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="coastal-input"
+                                        placeholder="Enter your password"
+                                        required
+                                    />
+                                </div>
+                                
+                                {loginError && (
+                                    <div className="error-message mb-4">{loginError}</div>
+                                )}
+                                
+                                <button type="submit" className="coastal-button w-full">
+                                    {isSignup ? 'Sign Up' : 'Sign In'}
+                                </button>
+                            </form>
+                            
+                            <div className="text-center mt-4">
+                                <button
+                                    onClick={() => setIsSignup(!isSignup)}
+                                    className="text-blue-600 hover:text-blue-700"
+                                >
+                                    {isSignup ? 'Already have an account? Sign In' : 'Need an account? Sign Up'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            // Navigation Component
+            const Navigation = () => {
+                const tabs = [
+                    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+                    { id: 'measurements', label: 'Measurements', icon: '📏' },
+                    { id: 'nutrition', label: 'Nutrition', icon: '🥗' },
+                    { id: 'workouts', label: 'Workouts', icon: '💪' },
+                    { id: 'goals', label: 'Goals', icon: '🎯' },
+                    { id: 'reports', label: 'Reports', icon: '📈' }
+                ];
+
+                if (hasAnyRole('admin', 'owner')) {
+                    tabs.push({ id: 'users', label: 'Users', icon: '👥' });
+                }
+
+                if (hasAnyRole('specialist', 'admin', 'owner')) {
+                    tabs.push({ id: 'tests', label: 'Tests', icon: '🧪' });
+                }
+
+                if (hasRole('engineer')) {
+                    tabs.push({ id: 'engineer', label: 'Engineer', icon: '🔧' });
+                }
+
+                return (
+                    <nav className="coastal-card mb-6 px-6 py-4">
+                        <div className="flex justify-between items-center mb-4">
+                            <CoastalLogo size="small" />
+                            <div className="flex items-center gap-4">
+                                <div className="flex gap-2">
+                                    {currentUser.roles.map(role => (
+                                        <span key={role} className={`coastal-badge badge-${role}`}>
+                                            {role}
+                                        </span>
+                                    ))}
+                                </div>
+                                <span className="text-gray-600">{currentUser.name}</span>
+                                <button 
+                                    onClick={() => setCurrentUser(null)}
+                                    className="text-gray-500 hover:text-gray-700"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-2 overflow-x-auto">
+                            {tabs.map(tab => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`coastal-tab ${activeTab === tab.id ? 'active' : ''}`}
+                                >
+                                    <span className="mr-2">{tab.icon}</span>
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+                    </nav>
+                );
+            };
+
+            // Dashboard Component
+            const Dashboard = () => {
+                const isClient = hasRole('client');
+                const myWorkouts = clientData.workouts.filter(w => 
+                    isClient ? w.clientId === currentUser.id : 
+                    (selectedClient ? w.clientId === selectedClient.id : false)
+                );
+
+                const handleStartWorkout = (workoutId) => {
+                    const workout = clientData.workouts.find(w => w.id === workoutId);
+                    if (workout) {
+                        setActiveWorkout(workout);
+                        setShowStartWorkout(true);
+                        setActiveTab('workouts');
+                    }
+                };
+
+                const myMeasurements = clientData.measurements.filter(m => 
+                    isClient ? m.clientId === currentUser.id : 
+                    (selectedClient ? m.clientId === selectedClient.id : false)
+                );
+
+                const myGoals = clientData.goals.filter(g => 
+                    isClient ? g.clientId === currentUser.id : 
+                    (selectedClient ? g.clientId === selectedClient.id : false)
+                );
+
+                const myNutrition = clientData.nutrition.filter(n => 
+                    isClient ? n.clientId === currentUser.id : 
+                    (selectedClient ? n.clientId === selectedClient.id : false)
+                );
+
+                return (
+                    <div className="space-y-6">
+                        <div className="coastal-card p-6">
+                            <h2 className="text-2xl font-bold mb-4">
+                                Welcome back, {currentUser.name}!
+                            </h2>
+                            
+                            {!isClient && (
+                                <div className="mb-6">
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Select Client
+                                    </label>
+                                    <select 
+                                        onChange={(e) => {
+                                            const client = allUsers.find(u => u.id === e.target.value);
+                                            setSelectedClient(client || null);
+                                        }}
+                                        className="coastal-select max-w-xs"
+                                        value={selectedClient?.id || ''}
+                                    >
+                                        <option value="">Choose a client...</option>
+                                        {getMyClients().map(client => (
+                                            <option key={client.id} value={client.id}>{client.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+                        </div>
+
+                        {(isClient || selectedClient) && (
+                            <>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    <div className="stat-card cursor-pointer" onClick={() => setActiveTab('measurements')}>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-3xl">📏</span>
+                                            <span className="text-2xl font-bold">{myMeasurements.length}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-600">Measurements</p>
+                                        <p className="text-xs text-gray-500">Click to view</p>
+                                    </div>
+
+                                    <div className="stat-card cursor-pointer" onClick={() => setActiveTab('workouts')}>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-3xl">💪</span>
+                                            <span className="text-2xl font-bold">{myWorkouts.length}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-600">Active Workouts</p>
+                                        <p className="text-xs text-gray-500">Click to view</p>
+                                    </div>
+
+                                    <div className="stat-card cursor-pointer" onClick={() => setActiveTab('nutrition')}>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-3xl">🥗</span>
+                                            <span className="text-2xl font-bold">{myNutrition.length}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-600">Nutrition Plans</p>
+                                        <p className="text-xs text-gray-500">Click to view</p>
+                                    </div>
+
+                                    <div className="stat-card cursor-pointer" onClick={() => setActiveTab('goals')}>
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-3xl">🎯</span>
+                                            <span className="text-2xl font-bold">{myGoals.length}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-600">Active Goals</p>
+                                        <p className="text-xs text-gray-500">Click to view</p>
+                                    </div>
+                                </div>
+
+                                {isClient && myWorkouts.length > 0 && (
+                                    <div className="coastal-card p-6">
+                                        <h3 className="text-lg font-semibold mb-4">Your Workouts</h3>
+                                        <div className="space-y-3">
+                                            {myWorkouts.filter(w => !w.completed).map(workout => (
+                                                <div key={workout.id} className="bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                                                    <div>
+                                                        <h4 className="font-semibold">{workout.name}</h4>
+                                                        <p className="text-sm text-gray-600">
+                                                            {workout.groups?.length || 0} exercise groups
+                                                        </p>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => handleStartWorkout(workout.id)}
+                                                        className="coastal-button"
+                                                    >
+                                                        Start Workout
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                );
+            };
+
+            // Workouts Component
+            const WorkoutsComponent = () => {
+                const [showCreateForm, setShowCreateForm] = useState(false);
+                const [editingWorkout, setEditingWorkout] = useState(null);
+                const [workoutForm, setWorkoutForm] = useState({
+                    name: '',
+                    clientId: '',
+                    groups: [{
+                        id: Date.now(),
+                        name: 'Circuit 1',
+                        exercises: []
+                    }]
+                });
+
+                const isClient = hasRole('client');
+                const canAssign = hasAnyRole('specialist', 'admin', 'owner');
+
+                // Workout session state
+                const [workoutSession, setWorkoutSession] = useState(activeWorkout ? {
+                    workoutId: activeWorkout.id,
+                    exerciseData: {}
+                } : null);
+
+                const addExerciseToGroup = (groupId) => {
+                    setWorkoutForm(prev => ({
+                        ...prev,
+                        groups: prev.groups.map(group => 
+                            group.id === groupId 
+                                ? {
+                                    ...group,
+                                    exercises: [...group.exercises, {
+                                        id: Date.now(),
+                                        name: '',
+                                        sets: '',
+                                        reps: '',
+                                        weight: '',
+                                        time: '',
+                                        rest: '',
+                                        image: null,
+                                        youtubeLink: ''
+                                    }]
+                                }
+                                : group
+                        )
+                    }));
+                };
+
+                const addGroup = () => {
+                    setWorkoutForm(prev => ({
+                        ...prev,
+                        groups: [...prev.groups, {
+                            id: Date.now(),
+                            name: `Circuit ${prev.groups.length + 1}`,
+                            exercises: []
+                        }]
+                    }));
+                };
+
+                const updateExercise = (groupId, exerciseId, field, value) => {
+                    setWorkoutForm(prev => ({
+                        ...prev,
+                        groups: prev.groups.map(group => 
+                            group.id === groupId 
+                                ? {
+                                    ...group,
+                                    exercises: group.exercises.map(ex => 
+                                        ex.id === exerciseId ? { ...ex, [field]: value } : ex
+                                    )
+                                }
+                                : group
+                        )
+                    }));
+                };
+
+                const removeExercise = (groupId, exerciseId) => {
+                    setWorkoutForm(prev => ({
+                        ...prev,
+                        groups: prev.groups.map(group => 
+                            group.id === groupId 
+                                ? {
+                                    ...group,
+                                    exercises: group.exercises.filter(ex => ex.id !== exerciseId)
+                                }
+                                : group
+                        )
+                    }));
+                };
+
+                const removeGroup = (groupId) => {
+                    setWorkoutForm(prev => ({
+                        ...prev,
+                        groups: prev.groups.filter(g => g.id !== groupId)
+                    }));
+                };
+
+                const handleCreateWorkout = () => {
+                    if (workoutForm.name && workoutForm.clientId) {
+                        const newWorkout = {
+                            id: editingWorkout?.id || Date.now(),
+                            name: workoutForm.name,
+                            clientId: workoutForm.clientId,
+                            assignedBy: currentUser.id,
+                            groups: workoutForm.groups.filter(g => g.exercises.length > 0),
+                            completed: false
+                        };
+
+                        if (editingWorkout) {
+                            setClientData(prev => ({
+                                ...prev,
+                                workouts: prev.workouts.map(w => 
+                                    w.id === editingWorkout.id ? newWorkout : w
+                                )
+                            }));
+                        } else {
+                            setClientData(prev => ({
+                                ...prev,
+                                workouts: [...prev.workouts, newWorkout]
+                            }));
+                        }
+
+                        setShowCreateForm(false);
+                        setEditingWorkout(null);
+                        setWorkoutForm({
+                            name: '',
+                            clientId: '',
+                            groups: [{
+                                id: Date.now(),
+                                name: 'Circuit 1',
+                                exercises: []
+                            }]
+                        });
+                        addNotification(`Workout ${editingWorkout ? 'updated' : 'created'} successfully!`);
+                    }
+                };
+
+                const handleEditWorkout = (workout) => {
+                    setEditingWorkout(workout);
+                    setWorkoutForm({
+                        name: workout.name,
+                        clientId: workout.clientId,
+                        groups: workout.groups || [{
+                            id: Date.now(),
+                            name: 'Circuit 1',
+                            exercises: []
+                        }]
+                    });
+                    setShowCreateForm(true);
+                };
+
+                const handleDeleteWorkout = (workoutId) => {
+                    if (confirm('Are you sure you want to delete this workout?')) {
+                        setClientData(prev => ({
+                            ...prev,
+                            workouts: prev.workouts.filter(w => w.id !== workoutId)
+                        }));
+                        addNotification('Workout deleted successfully!');
+                    }
+                };
+
+                const handleStartWorkout = (workout) => {
+                    setWorkoutSession({
+                        workoutId: workout.id,
+                        exerciseData: {}
+                    });
+                    setShowStartWorkout(true);
+                };
+
+                const updateWorkoutData = (groupId, exerciseId, field, value) => {
+                    setWorkoutSession(prev => ({
+                        ...prev,
+                        exerciseData: {
+                            ...prev.exerciseData,
+                            [`${groupId}-${exerciseId}-${field}`]: value
+                        }
+                    }));
+                };
+
+                const completeWorkout = () => {
+                    const workoutId = workoutSession.workoutId;
+                    setClientData(prev => ({
+                        ...prev,
+                        workouts: prev.workouts.map(w => 
+                            w.id === workoutId 
+                                ? { 
+                                    ...w, 
+                                    completed: true, 
+                                    completedDate: new Date().toISOString(),
+                                    sessionData: workoutSession.exerciseData 
+                                }
+                                : w
+                        )
+                    }));
+                    setWorkoutSession(null);
+                    setShowStartWorkout(false);
+                    addNotification('Workout completed! Great job!');
+                };
+
+                const myWorkouts = clientData.workouts.filter(w => 
+                    isClient ? w.clientId === currentUser.id : true
+                );
+
+                // Show workout session if active
+                if (showStartWorkout && workoutSession) {
+                    const workout = clientData.workouts.find(w => w.id === workoutSession.workoutId);
+                    if (!workout) return null;
+
+                    return (
+                        <div className="coastal-card p-6">
+                            <h2 className="text-2xl font-bold mb-6">Active Workout: {workout.name}</h2>
+                            
+                            <div className="space-y-6">
+                                {workout.groups?.map((group, groupIndex) => (
+                                    <div key={group.id} className="exercise-group">
+                                        <h3 className="text-lg font-semibold mb-4">{group.name}</h3>
+                                        <div className="space-y-4">
+                                            {group.exercises.map((exercise, exerciseIndex) => (
+                                                <div key={exercise.id} className="exercise-item">
+                                                    <h4 className="font-semibold mb-2">{exercise.name}</h4>
+                                                    <div className="grid grid-cols-3 gap-2 text-sm mb-3">
+                                                        <div>Target: {exercise.sets} × {exercise.reps}</div>
+                                                        {exercise.weight && <div>Weight: {exercise.weight}</div>}
+                                                        {exercise.time && <div>Time: {exercise.time}</div>}
+                                                        {exercise.rest && <div>Rest: {exercise.rest}</div>}
+                                                    </div>
+                                                    
+                                                    <div className="grid grid-cols-3 gap-2">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Actual sets"
+                                                            className="coastal-input"
+                                                            onChange={(e) => updateWorkoutData(group.id, exercise.id, 'sets', e.target.value)}
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Actual reps"
+                                                            className="coastal-input"
+                                                            onChange={(e) => updateWorkoutData(group.id, exercise.id, 'reps', e.target.value)}
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Weight used"
+                                                            className="coastal-input"
+                                                            onChange={(e) => updateWorkoutData(group.id, exercise.id, 'weight', e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="flex gap-4 mt-6">
+                                <button
+                                    onClick={completeWorkout}
+                                    className="coastal-button"
+                                >
+                                    Complete Workout
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setWorkoutSession(null);
+                                        setShowStartWorkout(false);
+                                    }}
+                                    className="coastal-button bg-gray-500 hover:bg-gray-600"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="coastal-card p-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold">💪 Workouts</h2>
+                            
+                            <div className="flex gap-4 items-center">
+                                {!isClient && (
+                                    <select 
+                                        onChange={(e) => setSelectedClient(allUsers.find(u => u.id === e.target.value) || null)}
+                                        className="coastal-select max-w-xs"
+                                        value={selectedClient?.id || ''}
+                                    >
+                                        <option value="">All clients</option>
+                                        {getMyClients().map(client => (
+                                            <option key={client.id} value={client.id}>{client.name}</option>
+                                        ))}
+                                    </select>
+                                )}
+                                
+                                {canAssign && (
+                                    <button 
+                                        onClick={() => {
+                                            setShowCreateForm(true);
+                                            setEditingWorkout(null);
+                                            setWorkoutForm({
+                                                name: '',
+                                                clientId: '',
+                                                groups: [{
+                                                    id: Date.now(),
+                                                    name: 'Circuit 1',
+                                                    exercises: []
+                                                }]
+                                            });
+                                        }} 
+                                        className="coastal-button"
+                                    >
+                                        + Add Workout
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        {showCreateForm && (
+                            <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
+                                <div className="modal-content" style={{ maxWidth: '800px' }} onClick={(e) => e.stopPropagation()}>
+                                    <h3 className="text-xl font-semibold mb-4">
+                                        {editingWorkout ? 'Edit' : 'Add'} Workout
+                                    </h3>
+                                    
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <input
+                                                type="text"
+                                                value={workoutForm.name}
+                                                onChange={(e) => setWorkoutForm({...workoutForm, name: e.target.value})}
+                                                className="coastal-input"
+                                                placeholder="Workout Name"
+                                            />
+                                            <select 
+                                                value={workoutForm.clientId}
+                                                onChange={(e) => setWorkoutForm({...workoutForm, clientId: e.target.value})}
+                                                className="coastal-select"
+                                            >
+                                                <option value="">Select Client</option>
+                                                {getMyClients().map(client => (
+                                                    <option key={client.id} value={client.id}>{client.name}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        {workoutForm.groups.map((group, groupIndex) => (
+                                            <div key={group.id} className="exercise-group">
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <input
+                                                        type="text"
+                                                        value={group.name}
+                                                        onChange={(e) => {
+                                                            const newGroups = [...workoutForm.groups];
+                                                            newGroups[groupIndex].name = e.target.value;
+                                                            setWorkoutForm({...workoutForm, groups: newGroups});
+                                                        }}
+                                                        className="coastal-input flex-1 mr-2"
+                                                        placeholder="Group Name (e.g., Super Set 1)"
+                                                    />
+                                                    {workoutForm.groups.length > 1 && (
+                                                        <button
+                                                            onClick={() => removeGroup(group.id)}
+                                                            className="delete-button"
+                                                        >
+                                                            Remove Group
+                                                        </button>
+                                                    )}
+                                                </div>
+                                                
+                                                {group.exercises.map((exercise, exerciseIndex) => (
+                                                    <div key={exercise.id} className="exercise-item mb-3">
+                                                        <div className="grid grid-cols-1 gap-2 mb-2">
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.name}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'name', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Exercise Name"
+                                                            />
+                                                        </div>
+                                                        <div className="grid grid-cols-5 gap-2 mb-2">
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.sets}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'sets', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Sets"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.reps}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'reps', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Reps"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.weight}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'weight', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Weight/Intensity"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.time}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'time', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Time"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.rest}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'rest', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Rest"
+                                                            />
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            <input
+                                                                type="url"
+                                                                value={exercise.youtubeLink}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'youtubeLink', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="YouTube Link (optional)"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={exercise.image}
+                                                                onChange={(e) => updateExercise(group.id, exercise.id, 'image', e.target.value)}
+                                                                className="coastal-input"
+                                                                placeholder="Image URL (optional)"
+                                                            />
+                                                        </div>
+                                                        <button
+                                                            onClick={() => removeExercise(group.id, exercise.id)}
+                                                            className="delete-button mt-2"
+                                                        >
+                                                            Remove Exercise
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                
+                                                <button
+                                                    onClick={() => addExerciseToGroup(group.id)}
+                                                    className="text-blue-600 hover:text-blue-700 text-sm"
+                                                >
+                                                    + Add Exercise to {group.name}
+                                                </button>
+                                            </div>
+                                        ))}
+                                        
+                                        <button
+                                            onClick={addGroup}
+                                            className="coastal-button bg-green-600 hover:bg-green-700"
+                                        >
+                                            + Add Exercise Group
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="form-buttons">
+                                        <button
+                                            onClick={handleCreateWorkout}
+                                            className="coastal-button flex-1"
+                                        >
+                                            {editingWorkout ? 'Update' : 'Add'} Workout
+                                        </button>
+                                        <button
+                                            onClick={() => setShowCreateForm(false)}
+                                            className="coastal-button bg-gray-500 hover:bg-gray-600 flex-1"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="space-y-3">
+                            {myWorkouts.map(workout => (
+                                <div key={workout.id} className="bg-gray-50 rounded-xl p-4">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h4 className="font-semibold">{workout.name}</h4>
+                                            <p className="text-sm text-gray-600">
+                                                Client: {allUsers.find(u => u.id === workout.clientId)?.name}
+                                            </p>
+                                            <p className="text-sm text-gray-600">
+                                                {workout.groups?.reduce((acc, g) => acc + g.exercises.length, 0) || 0} exercises in {workout.groups?.length || 0} groups
+                                            </p>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            {(isClient || hasAnyRole('admin', 'owner', 'specialist')) && !workout.completed && (
+                                                <button
+                                                    onClick={() => handleStartWorkout(workout)}
+                                                    className="coastal-button"
+                                                >
+                                                    Start
+                                                </button>
+                                            )}
+                                            {canAssign && (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleEditWorkout(workout)}
+                                                        className="edit-button"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteWorkout(workout.id)}
+                                                        className="delete-button"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </>
+                                            )}
+                                            {workout.completed && (
+                                                <span className="text-green-600">✓ Completed</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {myWorkouts.length === 0 && (
+                                <p className="text-gray-500 text-center py-8">No workouts available</p>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            // Nutrition Component
+            const NutritionComponent = () => {
+                const [showAddForm, setShowAddForm] = useState(false);
+                const [editingNutrition, setEditingNutrition] = useState(null);
+                const [nutritionForm, setNutritionForm] = useState({
+                    clientId: '',
+                    protein: '',
+                    carbs: '',
+                    fat: '',
+                    calories: '',
+                    mealPlan: ''
+                });
+
+                const isClient = hasRole('client');
+                const canAssign = hasAnyRole('specialist', 'admin', 'owner');
+
+                const handleAddNutrition = () => {
+                    if (nutritionForm.clientId && nutritionForm.calories) {
+                        const newNutrition = {
+                            id: editingNutrition?.id || Date.now(),
+                            ...nutritionForm,
+                            assignedBy: currentUser.id,
+                            date: new Date().toISOString().split('T')[0]
+                        };
+
+                        if (editingNutrition) {
+                            setClientData(prev => ({
+                                ...prev,
+                                nutrition: prev.nutrition.map(n => 
+                                    n.id === editingNutrition.id ? newNutrition : n
+                                )
+                            }));
+                        } else {
+                            setClientData(prev => ({
+                                ...prev,
+                                nutrition: [...prev.nutrition, newNutrition]
+                            }));
+                        }
+
+                        setShowAddForm(false);
+                        setEditingNutrition(null);
+                        setNutritionForm({
+                            clientId: '',
+                            protein: '',
+                            carbs: '',
+                            fat: '',
+                            calories: '',
+                            mealPlan: ''
+                        });
+                        addNotification(`Nutrition plan ${editingNutrition ? 'updated' : 'added'} successfully!`);
+                    }
+                };
+
+                const handleEditNutrition = (nutrition) => {
+                    setEditingNutrition(nutrition);
+                    setNutritionForm({
+                        clientId: nutrition.clientId,
+                        protein: nutrition.protein,
+                        carbs: nutrition.carbs,
+                        fat: nutrition.fat,
+                        calories: nutrition.calories,
+                        mealPlan: nutrition.mealPlan || ''
+                    });
+                    setShowAddForm(true);
+                };
+
+                const handleDeleteNutrition = (nutritionId) => {
+                    if (confirm('Are you sure you want to delete this nutrition plan?')) {
+                        setClientData(prev => ({
+                            ...prev,
+                            nutrition: prev.nutrition.filter(n => n.id !== nutritionId)
+                        }));
+                        addNotification('Nutrition plan deleted successfully!');
+                    }
+                };
+
+                const myNutrition = clientData.nutrition.filter(n => 
+                    isClient ? n.clientId === currentUser.id : true
+                );
+
+                return (
+                    <div className="coastal-card p-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold">🥗 Nutrition</h2>
+                            
+                            <div className="flex gap-4 items-center">
+                                {!isClient && (
+                                    <select 
+                                        onChange={(e) => setSelectedClient(allUsers.find(u => u.id === e.target.value) || null)}
+                                        className="coastal-select max-w-xs"
+                                        value={selectedClient?.id || ''}
+                                    >
+                                        <option value="">All clients</option>
+                                        {getMyClients().map(client => (
+                                            <option key={client.id} value={client.id}>{client.name}</option>
+                                        ))}
+                                    </select>
+                                )}
+                                
+                                {canAssign && (
+                                    <button 
+                                        onClick={() => {
+                                            setShowAddForm(true);
+                                            setEditingNutrition(null);
+                                            setNutritionForm({
+                                                clientId: '',
+                                                protein: '',
+                                                carbs: '',
+                                                fat: '',
+                                                calories: '',
+                                                mealPlan: ''
+                                            });
+                                        }} 
+                                        className="coastal-button"
+                                    >
+                                        + Add Nutrition Plan
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        {showAddForm && (
+                            <div className="bg-gray-50 rounded-xl p-6 mb-6">
+                                <h3 className="text-lg font-semibold mb-4">
+                                    {editingNutrition ? 'Edit' : 'Add'} Nutrition Plan
+                                </h3>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    <select 
+                                        value={nutritionForm.clientId}
+                                        onChange={(e) => setNutritionForm({...nutritionForm, clientId: e.target.value})}
+                                        className="coastal-select"
+                                        disabled={editingNutrition}
+                                    >
+                                        <option value="">Select Client</option>
+                                        {getMyClients().map(client => (
+                                            <option key={client.id} value={client.id}>{client.name}</option>
+                                        ))}
+                                    </select>
+                                    
+                                    <input
+                                        type="number"
+                                        placeholder="Daily Calories"
+                                        value={nutritionForm.calories}
+                                        onChange={(e) => setNutritionForm({...nutritionForm, calories: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <input
+                                        type="number"
+                                        placeholder="Protein (g)"
+                                        value={nutritionForm.protein}
+                                        onChange={(e) => setNutritionForm({...nutritionForm, protein: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <input
+                                        type="number"
+                                        placeholder="Carbs (g)"
+                                        value={nutritionForm.carbs}
+                                        onChange={(e) => setNutritionForm({...nutritionForm, carbs: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <input
+                                        type="number"
+                                        placeholder="Fat (g)"
+                                        value={nutritionForm.fat}
+                                        onChange={(e) => setNutritionForm({...nutritionForm, fat: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <textarea
+                                        placeholder="Meal Plan Notes (optional)"
+                                        value={nutritionForm.mealPlan}
+                                        onChange={(e) => setNutritionForm({...nutritionForm, mealPlan: e.target.value})}
+                                        className="coastal-input"
+                                        rows="3"
+                                    />
+                                </div>
+                                
+                                <div className="form-buttons">
+                                    <button onClick={handleAddNutrition} className="coastal-button">
+                                        {editingNutrition ? 'Update' : 'Add'} Plan
+                                    </button>
+                                    <button 
+                                        onClick={() => {
+                                            setShowAddForm(false);
+                                            setEditingNutrition(null);
+                                        }} 
+                                        className="coastal-button bg-gray-500 hover:bg-gray-600"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="space-y-3">
+                            {myNutrition.map(nutrition => (
+                                <div key={nutrition.id} className="bg-gray-50 rounded-xl p-4">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h4 className="font-semibold">
+                                                {allUsers.find(u => u.id === nutrition.clientId)?.name}'s Nutrition Plan
+                                            </h4>
+                                            <p className="text-sm text-gray-600">Date: {nutrition.date}</p>
+                                            <div className="grid grid-cols-4 gap-4 mt-2 text-sm">
+                                                <div>Calories: {nutrition.calories}</div>
+                                                <div>Protein: {nutrition.protein}g</div>
+                                                <div>Carbs: {nutrition.carbs}g</div>
+                                                <div>Fat: {nutrition.fat}g</div>
+                                            </div>
+                                            {nutrition.mealPlan && (
+                                                <p className="text-sm text-gray-600 mt-2">{nutrition.mealPlan}</p>
+                                            )}
+                                        </div>
+                                        {canAssign && (
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleEditNutrition(nutrition)}
+                                                    className="edit-button"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDeleteNutrition(nutrition.id)}
+                                                    className="delete-button"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                            {myNutrition.length === 0 && (
+                                <p className="text-gray-500 text-center py-8">No nutrition plans available</p>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            // Measurements Component
+            const MeasurementsComponent = () => {
+                const [showAddForm, setShowAddForm] = useState(false);
+                const [measurementForm, setMeasurementForm] = useState({
+                    clientId: '',
+                    weight: '',
+                    bodyFat: '',
+                    bloodPressure: '',
+                    date: new Date().toISOString().split('T')[0]
+                });
+
+                const isClient = hasRole('client');
+
+                const handleAddMeasurement = () => {
+                    const targetClientId = isClient ? currentUser.id : measurementForm.clientId;
+                    
+                    if (targetClientId && measurementForm.weight) {
+                        const newMeasurement = {
+                            id: Date.now(),
+                            ...measurementForm,
+                            clientId: targetClientId,
+                            enteredBy: currentUser.id
+                        };
+
+                        setClientData(prev => ({
+                            ...prev,
+                            measurements: [...prev.measurements, newMeasurement]
+                        }));
+
+                        // Clear form
+                        setMeasurementForm({
+                            clientId: '',
+                            weight: '',
+                            bodyFat: '',
+                            bloodPressure: '',
+                            date: new Date().toISOString().split('T')[0]
+                        });
+                        
+                        addNotification('Measurement added successfully!');
+                    }
+                };
+
+                const myMeasurements = clientData.measurements.filter(m => 
+                    isClient ? m.clientId === currentUser.id : true
+                );
+
+                return (
+                    <div className="coastal-card p-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold">📏 Measurements</h2>
+                            
+                            <div className="flex gap-4 items-center">
+                                {!isClient && (
+                                    <select 
+                                        onChange={(e) => setSelectedClient(allUsers.find(u => u.id === e.target.value) || null)}
+                                        className="coastal-select max-w-xs"
+                                        value={selectedClient?.id || ''}
+                                    >
+                                        <option value="">All clients</option>
+                                        {getMyClients().map(client => (
+                                            <option key={client.id} value={client.id}>{client.name}</option>
+                                        ))}
+                                    </select>
+                                )}
+                                
+                                <button 
+                                    onClick={() => setShowAddForm(!showAddForm)} 
+                                    className="coastal-button"
+                                >
+                                    {showAddForm ? 'Hide Form' : '+ Add Measurement'}
+                                </button>
+                            </div>
+                        </div>
+
+                        {showAddForm && (
+                            <div className="bg-gray-50 rounded-xl p-6 mb-6">
+                                <h3 className="text-lg font-semibold mb-4">Add Measurement</h3>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    {!isClient && (
+                                        <select 
+                                            value={measurementForm.clientId}
+                                            onChange={(e) => setMeasurementForm({...measurementForm, clientId: e.target.value})}
+                                            className="coastal-select"
+                                        >
+                                            <option value="">Select Client</option>
+                                            {getMyClients().map(client => (
+                                                <option key={client.id} value={client.id}>{client.name}</option>
+                                            ))}
+                                        </select>
+                                    )}
+                                    
+                                    <input
+                                        type="date"
+                                        value={measurementForm.date}
+                                        onChange={(e) => setMeasurementForm({...measurementForm, date: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <input
+                                        type="number"
+                                        placeholder="Weight (lbs)"
+                                        value={measurementForm.weight}
+                                        onChange={(e) => setMeasurementForm({...measurementForm, weight: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <input
+                                        type="number"
+                                        placeholder="Body Fat %"
+                                        value={measurementForm.bodyFat}
+                                        onChange={(e) => setMeasurementForm({...measurementForm, bodyFat: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                    
+                                    <input
+                                        type="text"
+                                        placeholder="Blood Pressure"
+                                        value={measurementForm.bloodPressure}
+                                        onChange={(e) => setMeasurementForm({...measurementForm, bloodPressure: e.target.value})}
+                                        className="coastal-input"
+                                    />
+                                </div>
+                                
+                                <button 
+                                    onClick={handleAddMeasurement} 
+                                    className="coastal-button mt-4"
+                                    disabled={!measurementForm.weight || (!isClient && !measurementForm.clientId)}
+                                >
+                                    Add Measurement
+                                </button>
+                            </div>
+                        )}
+
+                        <div className="space-y-3">
+                            {myMeasurements.map(measurement => (
+                                <div key={measurement.id} className="bg-gray-50 rounded-xl p-4">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <h4 className="font-semibold">{measurement.date}</h4>
+                                            {!isClient && (
+                                                <p className="text-sm text-gray-600">
+                                                    Client: {allUsers.find(u => u.id === measurement.clientId)?.name}
+                                                </p>
+                                            )}
+                                            <div className="grid grid-cols-3 gap-4 mt-2 text-sm">
+                                                <div>Weight: {measurement.weight} lbs</div>
+                                                {measurement.bodyFat && <div>Body Fat: {measurement.bodyFat}%</div>}
+                                                {measurement.bloodPressure && <div>BP: {measurement.bloodPressure}</div>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {myMeasurements.length === 0 && (
+                                <p className="text-gray-500 text-center py-8">No measurements recorded</p>
+                            )}
+                        </div>
+                    </div>
+                );
+            };
+
+            // Goals Component
+            const GoalsComponent = () => (
+                <div className="coastal-card p-6">
+                    <h2 className="text-2xl font-bold">🎯 Goals</h2>
+                    <p className="text-gray-500 mt-4">Goals feature coming soon...</p>
+                </div>
+            );
+
+            // Reports Component
+            const ReportsComponent = () => (
+                <div className="coastal-card p-6">
+                    <h2 className="text-2xl font-bold">📈 Reports</h2>
+                    <p className="text-gray-500 mt-4">Reports feature coming soon...</p>
+                </div>
+            );
+
+            // Users Component
+            const UsersComponent = () => (
+                <div className="coastal-card p-6">
+                    <h2 className="text-2xl font-bold">👥 User Management</h2>
+                    <p className="text-gray-500 mt-4">User management feature coming soon...</p>
+                </div>
+            );
+
+            // Tests Component
+            const TestsComponent = () => (
+                <div className="coastal-card p-6">
+                    <h2 className="text-2xl font-bold">🧪 Tests</h2>
+                    <p className="text-gray-500 mt-4">Tests feature coming soon...</p>
+                </div>
+            );
+
+            // Engineer Component
+            const EngineerComponent = () => {
+                const exportAllData = () => {
+                    const exportData = {
+                        timestamp: new Date().toISOString(),
+                        users: allUsers,
+                        clientData: clientData,
+                        exportedBy: currentUser.name
+                    };
+
+                    const dataStr = JSON.stringify(exportData, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'text/plain' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `coastal_fitness_backup_${new Date().toISOString().split('T')[0]}.txt`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    addNotification('Data exported successfully!');
+                };
+
+                const resetAllData = () => {
+                    if (confirm('This will export all data first, then reset. Continue?')) {
+                        exportAllData();
+                        setTimeout(() => {
+                            if (confirm('Data exported. Proceed with reset?')) {
+                                localStorage.clear();
+                                setClientData(initDemoData());
+                                setAllUsers(Object.entries(demoAccounts).map(([email, data]) => ({ ...data, email })));
+                                addNotification('System reset complete!');
+                            }
+                        }, 1000);
+                    }
+                };
+
+                return (
+                    <div className="coastal-card p-6">
+                        <h2 className="text-2xl font-bold mb-6">🔧 Engineering Dashboard</h2>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div className="bg-gray-50 rounded-xl p-4">
+                                <h3 className="font-semibold mb-2">Total Users</h3>
+                                <p className="text-2xl font-bold">{allUsers.length}</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-4">
+                                <h3 className="font-semibold mb-2">Total Measurements</h3>
+                                <p className="text-2xl font-bold">{clientData.measurements.length}</p>
+                            </div>
+                            <div className="bg-gray-50 rounded-xl p-4">
+                                <h3 className="font-semibold mb-2">Total Workouts</h3>
+                                <p className="text-2xl font-bold">{clientData.workouts.length}</p>
+                            </div>
+                        </div>
+                        
+                        <div className="flex gap-4">
+                            <button onClick={exportAllData} className="coastal-button">
+                                📥 Export All Data
+                            </button>
+                            <button onClick={resetAllData} className="coastal-button bg-red-600 hover:bg-red-700">
+                                🔄 Reset System
+                            </button>
+                        </div>
+                    </div>
+                );
+            };
+
+            // Main render
+            if (!currentUser) {
+                return <LoginForm />;
+            }
+
+            return (
+                <div className="min-h-screen p-4 max-w-7xl mx-auto">
+                    {notifications.map(notification => (
+                        <div key={notification.id} className={`${notification.type}-message mb-4`}>
+                            {notification.message}
+                        </div>
+                    ))}
+                    
+                    <Navigation />
+                    
+                    {activeTab === 'dashboard' && <Dashboard />}
+                    {activeTab === 'measurements' && <MeasurementsComponent />}
+                    {activeTab === 'nutrition' && <NutritionComponent />}
+                    {activeTab === 'workouts' && <WorkoutsComponent />}
+                    {activeTab === 'goals' && <GoalsComponent />}
+                    {activeTab === 'reports' && <ReportsComponent />}
+                    {activeTab === 'users' && <UsersComponent />}
+                    {activeTab === 'tests' && <TestsComponent />}
+                    {activeTab === 'engineer' && <EngineerComponent />}
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
